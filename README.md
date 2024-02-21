@@ -103,8 +103,7 @@ implementation 'com.google.android.material:material:1.7.0'
 
 Examples:
 
-<details markdown="span">
-  <summary>Native Android</summary>
+<details markdown="1"><summary markdown="span">Native Android</summary>
 
 Set the **minSdk** version to 21 and **compile/target** SDK version to 34 in the app.gradle file
 
@@ -125,8 +124,7 @@ android {
 ```
 </details>
 
-<details markdown="span">
-  <summary>Flutter</summary>
+<details markdown="1"><summary markdown="span">Flutter</summary>
 
 Set the **minSdk** version to 21
 
@@ -186,8 +184,7 @@ dependencies {
 
 ### AAR File Integration Instructions (Android Studio)
 
-<details markdown="span">
-  <summary>Native Android</summary>
+<details markdown="1"><summary markdown="span">Native Android</summary>
 
 1. Add CrSdk.aar file and wrapper.aar file to the lib folder of the app module.
    ![](https://files.slack.com/files-pri/T52JCC6GL-F06KACA8ERE/image.png?pub_secret=a6736fddb3)
@@ -207,8 +204,7 @@ Do the same for CrSdk.aar.
    ![](https://files.slack.com/files-pri/T52JCC6GL-F06J72QN8GP/image.png?pub_secret=fe7d7d1c01)
 </details>
 
-<details markdown="span">
-  <summary>Flutter</summary>
+<details markdown="1"><summary markdown="span">Flutter</summary>
 
 1. Add CrSdk.aar file and wrapper.aar file to the lib folder of the app module.
    ![](https://files.slack.com/files-pri/T52JCC6GL-F06KUA50N3W/image.png?pub_secret=a5fc889ef9)
@@ -232,8 +228,7 @@ Step 3.4: CR App ID & App statics
 We will provide the App ID that is required to connect with the server, You will see where to use it, We will also provide you Dashboard credentials by which you can login into []( https://explore.cashraven.io/?sa=D&source=editors&ust=1707852261966503&usg=AOvVaw222W9CAA4W8uUlZns7XVqr)[https://explore.cashraven.io/]( https://explore.cashraven.io/&sa=D&source=editors&ust=1707852261966790&usg=AOvVaw1w5pfoUH4TcVQg6x0uSR_I),  
 It will be useful for reviewing statics and creating new APP IDs or removing old ones.
 
-<details markdown="span">
-  <summary>Flutter: Creating a MethodChannel for SDK Access</summary>
+<details markdown="1"><summary markdown="span">Flutter: Creating a MethodChannel for SDK Access</summary>
 
 To get user consent by agreement dialog and also to call all other functions from SDK to Flutter UI, We need to create a `MethodChannel("crSDKChannel")`, function and channel naming is up to the developer, we are showing a basic example
 
@@ -543,8 +538,7 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-<details markdown="span">
-  <summary>Flutter: SDK Initialization Options</summary>
+<details markdown="1"><summary markdown="span">Flutter: SDK Initialization Options</summary>
 
 In the Flutter Project, the developer can Initialize in two places, use any one of them.
 
@@ -596,8 +590,7 @@ To establish a connection the Cash Raven and get the user’s consent to use the
 *   The second parameter (`@Nullable String title`) - takes the title or brand name to be shown on the Agreement dialog. The parameter can be null - in this case, the default value is used.
 *   The third parameter(`@Nullable Integer iconHeightInDp`) - takes the Integer value that will set the logo height. The parameter can be null - in this case, the default value is used.
 
-<details markdown="span">
-  <summary>Native Android</summary>
+<details markdown="1"><summary markdown="span">Native Android</summary>
 
 ```java
 public void startClick() {
@@ -629,8 +622,7 @@ public void startClick() {
 *   Call `connection.agreementDialog()` inside `onRequestPermissionsResult`
 </details>
 
-<details markdown="span">
-  <summary>Flutter: SDK Initialization Options</summary>
+<details markdown="1"><summary markdown="span">Flutter: SDK Initialization Options</summary>
 
 Create function `startSDK()` call connection.start(x,x,x)
 
@@ -698,8 +690,7 @@ Use `stop()` of `CRConnectionclass`. You can access this method using a `connect
 I.e - To stop the foreground service of CashRaven use the `connection.stop()` method.  
 NOTE - It doesn't change the status of the user’s opted-in agreement.
 
-<details markdown="span">
-  <summary>Native Android</summary>
+<details markdown="1"><summary markdown="span">Native Android</summary>
 
 ```java
 public void stopClick() {
@@ -709,8 +700,7 @@ public void stopClick() {
 ```
 </details>
 
-<details markdown="span">
-  <summary>Flutter</summary>
+<details markdown="1"><summary markdown="span">Flutter</summary>
 
 ```dart
 fun stopSDK(){
@@ -722,8 +712,7 @@ fun stopSDK(){
 ### 2. Revoke the User Agreement
 To revoke agreement use `revokeAgreement()` from `CRConnectionclass`. You can access `this` method by using the connection object.
 
-<details markdown="span">
-  <summary>Native Android</summary>
+<details markdown="1"><summary markdown="span">Native Android</summary>
 
 ```java
 public void revokeAgreementClick() {
@@ -732,8 +721,7 @@ public void revokeAgreementClick() {
 ```
 </details>
 
-<details markdown="span">
-  <summary>Flutter</summary>
+<details markdown="1"><summary markdown="span">Flutter</summary>
 
 ```dart
 fun revokeAgreement(){
@@ -745,8 +733,7 @@ fun revokeAgreement(){
 You can also show a predefined revoke agreement dialog, `userevokeAgreementAlertDialog()` from `CRConnectionclass`. You can access this method by using the connection object. It will show a premade alert dialog from SDK.
 
 
-<details markdown="span">
-  <summary>Native Android</summary>
+<details markdown="1"><summary markdown="span">Native Android</summary>
 
 ```java
 public void revokeAgreementClick() {
@@ -756,8 +743,7 @@ public void revokeAgreementClick() {
 ```
 </details>
 
-<details markdown="span">
-  <summary>Flutter</summary>
+<details markdown="1"><summary markdown="span">Flutter</summary>
 
 ```dart
 fun revokeAgreement(){
@@ -795,8 +781,7 @@ public void startClick() {
 
 ### 3. Necessity
 
-<details markdown="span">
-  <summary>Native Android</summary>
+<details markdown="1"><summary markdown="span">Native Android</summary>
 
 Call `connection.finish()` in `onDestroy()` of activity which is responsible for initialization of `CRConnection` object.
 
@@ -811,8 +796,7 @@ protected void onDestroy() {
 ```
 </details>
 
-<details markdown="span">
-  <summary>Flutter</summary>
+<details markdown="1"><summary markdown="span">Flutter</summary>
 
 Call `connection!!.finish()` in `onDestroy()` of `MainActivity` class
 
