@@ -99,9 +99,7 @@ implementation 'com.google.android.material:material:1.7.0'
 *   This is required for SDK to fetch condition data from Firebase. It is independent of the Application so the application doesn’t need to be connected to Firebase.
 *   The material dependency is to support the UI element of SDK.
 
-3. Set the **minSdk** version 
-
-Examples:
+**Set the **minSdk** version**  
 
 <details markdown=1>
   <summary markdown="span"><strong>Native Android</strong></summary>
@@ -169,7 +167,6 @@ android {
     }
 }
 ```
-
 </details>
 
 Step 3.3: Add SDK to the Project
@@ -177,17 +174,18 @@ Step 3.3: Add SDK to the Project
 
 Place both aar files in a libs folder under the app module directory (located `project_folder/app/libs` in this demo project), then add the aar file as a module. Please, go through the document below for more detail. After finishing this process, the CrSdk.aar file and Wrapper.aar should be added to your app-level build.gradle file.
 
-```java
-dependencies {
-    implementation files('libs/CrSdk.aar')  
-    implementation files('libs/wrapper.aar')
-}
-```
 
 ### AAR File Integration Instructions (Android Studio)
 
 <details markdown=1>
   <summary markdown="span"><strong>Native Android</strong></summary>
+
+```java
+dependencies {
+    implementation files('content_root_path/CrSdk.aar')  
+    implementation files('content_root_path/wrapper.aar')
+}
+```
 
 1. Add CrSdk.aar file and wrapper.aar file to the lib folder of the app module.
    ![](https://files.slack.com/files-pri/T52JCC6GL-F06KACA8ERE/image.png?pub_secret=a6736fddb3)
@@ -210,13 +208,20 @@ Do the same for CrSdk.aar.
 <details markdown=1>
   <summary markdown="span"><strong>Flutter</strong></summary>
 
+```java
+dependencies {
+    implementation files('absolute_path/CrSdk.aar')  
+    implementation files('absolute_path/wrapper.aar')
+}
+```
+
 1. Add CrSdk.aar file and wrapper.aar file to the lib folder of the app module.
    ![](https://files.slack.com/files-pri/T52JCC6GL-F06KUA50N3W/image.png?pub_secret=a5fc889ef9)
 2. Copy the absolute path of SDK by Right click →  Copy path/ reference..→ Absolute path
    ![](https://files.slack.com/files-pri/T52JCC6GL-F06KK7D4CNS/image.png?pub_secret=5ce8d454de)
 3. Open the project structure select dependencies, click on the “+” icon, add JAR/AAR dependency then paste the Absolute path. Do the same for Wrapper.aar as well.
    ![](https://files.slack.com/files-pri/T52JCC6GL-F06KRNWTH4K/image.png?pub_secret=46ae134fb6)
-4. All dependencies will look like
+4. Sample Absolute path with All dependencies -
 ```java
 dependencies {
     implementation "com.google.android.material:material:1.3.0"
@@ -445,15 +450,16 @@ class _MyHomePageState extends State<MyHomePage>{
 
 ##### 2. Get a callback and response from Android.
 
+
 Create variable `ChannelName` in `MainActivity` class that extends `FlutterActivity()`, assign the same value as what is provided on the flutter. In our case, this will be `crSDKChannel`
 
-```java
+```kotlin
 private  val channelName = "crSDKChannel";
 ```
 
 Setup `configureFlutterEngine(flutterEngine: FlutterEngine)` as follows:
 
-```java
+```kotlin
 override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
     super.configureFlutterEngine(flutterEngine)
     
@@ -502,6 +508,9 @@ CRConnection connection;
 *   The second parameter (`String appId`) - the app ID you created in step 3.4.
 *   The third parameter (`ConnectionListener connection`) - `ConnectionListener` object of the interface, it has 3 undefined methods - `onConnect`, `onDataUpdate`, and `onLoading`
 
+<details markdown=1>
+  <summary markdown="span"><strong>Native Android: SDK Initialization Options</strong></summary>
+    
 You can initialize an object inside the `onCreate()` method
 
 ```java
@@ -542,15 +551,45 @@ protected void onCreate(Bundle savedInstanceState) {
         });
 }
 ```
+</details>
 
 <details markdown=1>
   <summary markdown="span"><strong>Flutter: SDK Initialization Options</strong></summary>
+    
+```kotlin
+fun initSDK(){
+    connection = CRConnection(
+        this@MainActivity, "YOUR_APP_ID_RETRIVE_FROM_DASHBOARD",
+        object : ConnectionListener {
+            override fun onConnect(isConnected: Boolean) {
+                if (isConnected) {
+                    // Make UI changes when connection is establish
+                    // E.g - When user OPT-IN or start service this will trigger
+                } else {
+                    // Make UI changes when service is stopped
+                    // E.g - When user OPT-OUT or stop service this will trigger
+                }
+            }
+
+            override fun onDataUpdate(s: String) {
+                // Make changes according to changes in parameter of cashRaven's connection.
+                // E.g - The value of PREFERENCES_AGREEMENT_STATUS will change Whenever user-
+                // OTP_IN or OTP_OUT. Detailed Description of all parameter are provided below.
+            }
+
+            override fun onLoading(waiting: Boolean) {
+                // Handle UI when connection is being established
+                // E.g - showing progressbar
+            }
+        })
+}
+```
 
 In the Flutter Project, the developer can Initialize in two places, use any one of them.
 
 1. In onCreateView of MainActivity this will be done on the Android project side, call `initSDK()` in `onCreateView()`.
 
-```java
+```kotlin
 override fun onCreateView(
         parent: View?,
         name: String,
@@ -634,7 +673,7 @@ public void startClick() {
 
 Create function `startSDK()` call connection.start(x,x,x)
 
-```dart
+```kotlin
 fun startSDK(){
     connection!!.start(com.sprious.frpcwrapper.R.drawable.proxy_agreement_screen_logo, null, null)
 }
@@ -668,7 +707,7 @@ class _MyHomePageState extends State<MyHomePage>{
 
 Upon calling `connection.start()` agreement dialog will pop up for Android versions 5 to 12. In Android versions 13 and 14 dialog asking for notification permission will show, response to that will be handled by `onRequestPermissionsResult`
 
-```dart
+```kotlin
 override fun onRequestPermissionsResult(
     requestCode: Int,
     permissions: Array<String?>,
@@ -712,7 +751,7 @@ public void stopClick() {
 <details markdown=1>
   <summary markdown="span"><strong>Flutter</strong></summary>
 
-```dart
+```kotlin
 fun stopSDK(){
     connection!!.stop()
 }
@@ -735,7 +774,7 @@ public void revokeAgreementClick() {
 <details markdown=1>
   <summary markdown="span"><strong>Flutter</strong></summary>
 
-```dart
+```kotlin
 fun revokeAgreement(){
     connection!!.revokeAgreement()
 }
@@ -759,7 +798,7 @@ public void revokeAgreementClick() {
 <details markdown=1>
   <summary markdown="span"><strong>Flutter</strong></summary>
 
-```dart
+```kotlin
 fun revokeAgreement(){
     connection!!.revokeAgreementAlertDialog()
 }
@@ -768,15 +807,17 @@ fun revokeAgreement(){
 
 **NOTE** - It also stops foreground service and changes the status of the user’s opted-in agreement.
 
-`--- --- --- --- Universal version --- --- --- ---`
-
 **After agreement is revoked, you can create it again**, but you have to take the user’s consent first
+<details markdown=1>
+  <summary markdown="span"><strong>Native Android</strong></summary>
+    
+`--- --- --- --- Universal version --- --- --- ---`
 
 Use `start(int logo, @Nullable String title,@Nullable Integer iconHeightInDp)` of `CRConnectionclass`. You can access this method using connectionobject which you initialize in step 3.5.
 
 ```java
 public void startClick() {
-    connection.start(R.drawable.forward_btn,"My Title",50);
+    connection.start(R.drawable.logo,"My Title",50);
 
    //Null argument for set default value 
    //connection.start(R.drawable.logo,null,null);
@@ -792,6 +833,36 @@ public void startClick() {
   connection.acceptAgreement();
 }
 ```
+</details>
+
+<details markdown=1>
+  <summary markdown="span"><strong>Flutter</strong></summary>
+    
+`--- --- --- --- Universal version --- --- --- ---`
+
+Use `start(int logo, @Nullable String title,@Nullable Integer iconHeightInDp)` of `CRConnectionclass`. You can access this method using connectionobject which you initialize in step 3.5.
+
+```kotlin
+fun startClick() {
+   connection!!.start(R.drawable.logo, "My Title",50)
+
+   //Null argument for set default value 
+   //connection!!.start(R.drawable.logo,null,null)
+}
+```
+
+`--- --- --- --- Non agreement version --- --- --- ---`
+
+Use acceptAgreement ofCRConnection class. You can access this method using the connection object which you initialize in step 3.5 (No-Agreement section). then start the connection by `startService()`.
+
+```kotlin
+fun void startClick() {
+   connection!!.acceptAgreement()
+   connection!!.startService()
+}
+```
+</details>
+
 
 ### 3. Necessity
 
@@ -816,7 +887,7 @@ protected void onDestroy() {
 
 Call `connection!!.finish()` in `onDestroy()` of `MainActivity` class
 
-```dart
+```kotlin
 override fun onDestroy() {
     Log.d("ondd","called")
     connection!!.finish()
@@ -852,8 +923,10 @@ Step 5: Get updated on SDK’s parameter values
 *   The callback method `onDataUpdate()` of `ConnectionListener` updates and provides values of all parameters. Whenever any change occurs in any parameter onDataUpdate() method is triggered.
 
 You can put conditions based on the parameter's title/key for filter-specific parameters.  
-Sample:
 
+<details markdown=1>
+  <summary markdown="span"><strong>Native Android</strong></summary>
+    
 ```java
 connection = new CRConnection(Activity.this,"APP_ID", new ConnectionListener(){
     @Override
@@ -925,47 +998,36 @@ String allPara = "AgreementStatus :"+connection.getAgreementStatus()+"\n" +
         "Traffic Today  :"+connection.getTodayTraffic()+"\n" +
         "Device ID  :"+connection.getDeviceID();
 ```
+</details>
 
-Step 6: Set the value of CashRaven’s parameters.
-------------------------------------------------
+<details markdown=1>
+  <summary markdown="span"><strong>Flutter</strong></summary>
+    In this example we are getting all useful parameters at once developer can get as per need by calling the specific function mentioned in step 4.
+    Create function fetchData() that returns String value
+    
+   
+```kotlin
+ fun fetchData(): String {
+      var data =  "AgreementStatus :"+connection!!.getAgreementStatus()+"\n" +
+            "Connectivity with server  :"+connection!!.serverConnectionStatus+"\n" +
+            "App ID :"+connection!!.getAppID()+"\n" +
+            "Proxy Enable :"+connection!!.getProxyEnable()+"\n" +
+            "Activity Running  :"+connection!!.getActivityIsRunning()+"\n" +
+            "Data Enable :"+connection!!.getMobileDataEnable()+"\n" +
+            "Network UnMetered :"+connection!!.getNetworkUnmetered()+"\n" +
+            "Proxy Client to WebServer Traffic  :"+connection!!.getClientToWebServerTraffic()+"\n" +
+            "WebServer to Proxy Client Traffic  :"+connection!!.getWebserverToClientTraffic()+"\n" +
+            "Traffic Today  :"+connection!!.getTodayTraffic()+"\n" +
+            "Device ID  :"+connection!!.getDeviceID()
 
-CashRaven SDK has 3 writable parameters as mentioned in the table of step 4.
-
-*   PREFERENCES_AGREEMENT_STATUS
-*   PREFERENCES_ENABLED
-*   PREFERENCES_ACTIVITY_IS_RUNNING
-
-The sample below shows usage of the switch for set value true or false, feel free to use a button or any other UI elements. More details about all parameters are provided in the table, check it out to know more.
-
-Sample:
-
-```java
-switchProxy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Log.d("switchProxy"," : "+isChecked);
-        // PREFERENCES_ENABLED
-        connection.setProxyEnable(isChecked);
+    return data;
     }
-});
-
-switchActivityRunning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        // PREFERENCES_ACTIVITY_IS_RUNNING
-        connection.setActivityIsRunning(isChecked);
-    }
-});
-
-// Set PREFERENCES_AGREEMENT_STATUS true (Regular version)
-    connection.start(R.drawable.forward_btn,null,null);
-
-// Set PREFERENCES_AGREEMENT_STATUS true (No-Agreement version)
-    connection.start();
-
-// Set PREFERENCES_AGREEMENT_STATUS false
-   connection.revokeAgreement();
 ```
+
+We are passing this function in result.success(fetchData()) as a callback response to invoking the function of method channel "getData".
+To check a successful connection check the value of connection!!.serverConnectionStatus. It will return a response from the server, It will take a few sec to update Its value, so after a few sec of pressing the start button press Refresh data again to check the value.
+
+</details>
 
 Extra:
 ------
@@ -974,8 +1036,9 @@ Extra:
 
 You can achieve this by initializing the object of the CRConnection class with the CRConnection(Activity context) constructor.
 
-Sample:
-
+<details markdown=1>
+  <summary markdown="span"><strong>Native Android</strong></summary>
+    
 ```java
 public class SecondActivity extends AppCompatActivity {
     CRConnection connection;
@@ -988,11 +1051,39 @@ public class SecondActivity extends AppCompatActivity {
         connection = new CRConnection((Activity) getApplicationContext());
     }
  }
-
 ```
+</details>
+
+
+<details markdown=1>
+  <summary markdown="span"><strong>Flutter</strong></summary>
+
+Call `connection!!.finish()` in `onDestroy()` of `MainActivity` class
+
+```kotlin
+class MainActivity: FlutterActivity() {
+    
+          var connection: CRConnection? = null    
+          
+            override fun onCreateView(
+                parent: View?,
+                name: String,
+                context: Context,
+                attrs: AttributeSet
+        ): View? {
+            connection = CRConnection(applicationContext as Activity)
+            return super.onCreateView(parent, name, context, attrs)
+        }
+    
+}
+```
+</details>
+
+
 
 Step 7: Troubleshooting
 -----------------------
 
 *   Feel free to reach out to our support team for technical or non-technical issues.
-*   Get []( https://drive.google.com/drive/folders/1H7yiCGNdKo8N9fJJ0EDuSdWBbErfk4fu?usp%3Dsharing&sa=D&source=editors&ust=1707852262009104&usg=AOvVaw3TD-88DGUki3vpP0OO3sql)[Universal Version Demo Project]( https://drive.google.com/drive/folders/1H7yiCGNdKo8N9fJJ0EDuSdWBbErfk4fu?usp%3Dsharing&sa=D&source=editors&ust=1707852262009416&usg=AOvVaw3AF_wlYkUxkvhg6cDHkXlG) and []( https://drive.google.com/drive/folders/1XQBnZQ9OM9CaWyVwGL7IWEDbWUwiaMzP?usp%3Dsharing&sa=D&source=editors&ust=1707852262009618&usg=AOvVaw1CekIENg9lO8MfpodwpWTl)[Universal Version Demo App]( https://drive.google.com/drive/folders/1XQBnZQ9OM9CaWyVwGL7IWEDbWUwiaMzP?usp%3Dsharing&sa=D&source=editors&ust=1707852262009792&usg=AOvVaw3jPOmrDpGKyoElUmShWAsN)
+
+*   Get []( https://drive.google.com/drive/folders/1H7yiCGNdKo8N9fJJ0EDuSdWBbErfk4fu?usp%3Dsharing&sa=D&source=editors&ust=1707852262009104&usg=AOvVaw3TD-88DGUki3vpP0OO3sql)[Native Android Demo Project]( https://drive.google.com/drive/folders/1H7yiCGNdKo8N9fJJ0EDuSdWBbErfk4fu?usp%3Dsharing&sa=D&source=editors&ust=1707852262009416&usg=AOvVaw3AF_wlYkUxkvhg6cDHkXlG) and []( https://drive.google.com/drive/u/4/folders/1HrELWGusCdlnlvrv67QUD06Ei1F6FqR-)[Flutter Demo Project]( https://drive.google.com/drive/u/4/folders/1HrELWGusCdlnlvrv67QUD06Ei1F6FqR-)
