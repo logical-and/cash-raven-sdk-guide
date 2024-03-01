@@ -54,7 +54,7 @@ Add the Following Text to Your Terms of Service
 Step 2: Obtain the SDK AAR from the Distributive
 ------------------------------------------------
 
-Download the latest [](https://drive.google.com/drive/folders/1rXA3qBB5biq2C91YMW_6IXBwwfidmpOS?usp%3Dsharing&sa=D&source=editors&ust=1707852261960838&usg=AOvVaw2FGX5hRZyi-XEKrlpUC-7K)[CashRaven SDK Universal version]( https://drive.google.com/drive/folders/1rXA3qBB5biq2C91YMW_6IXBwwfidmpOS?usp%3Dsharing&sa=D&source=editors&ust=1707852261961020&usg=AOvVaw1lxuDVRebeJeT3DaN-z7XU)
+Download the latest [](https://drive.google.com/drive/folders/1rXA3qBB5biq2C91YMW_6IXBwwfidmpOS?usp%3Dsharing&sa=D&source=editors&ust=1707852261960838&usg=AOvVaw2FGX5hRZyi-XEKrlpUC-7K)[CashRaven SDK]( https://drive.google.com/drive/folders/1rXA3qBB5biq2C91YMW_6IXBwwfidmpOS?usp%3Dsharing&sa=D&source=editors&ust=1707852261961020&usg=AOvVaw1lxuDVRebeJeT3DaN-z7XU)
 
 Note. SDK AAR is obfuscated.
 
@@ -99,7 +99,7 @@ implementation 'com.google.android.material:material:1.7.0'
 *   This is required for SDK to fetch condition data from Firebase. It is independent of the Application so the application doesn’t need to be connected to Firebase.
 *   The material dependency is to support the UI element of SDK.
 
-**Set the **minSdk** version**  
+**Set the **minSdk** version**
 
 <details markdown=1>
   <summary markdown="span"><strong>Native Android</strong></summary>
@@ -510,7 +510,7 @@ CRConnection connection;
 
 <details markdown=1>
   <summary markdown="span"><strong>Native Android: SDK Initialization Options</strong></summary>
-    
+
 You can initialize an object inside the `onCreate()` method
 
 ```java
@@ -555,7 +555,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 <details markdown=1>
   <summary markdown="span"><strong>Flutter: SDK Initialization Options</strong></summary>
-    
+
 ```kotlin
 fun initSDK(){
     connection = CRConnection(
@@ -603,7 +603,7 @@ override fun onCreateView(
 ```
 
 2. It can be also initialized from the Flutter by initializing it in `Widget build(BuildContext context)` of the StatefulWidget class, which will be inside main.dart
-    
+
 ```dart
 class _MyHomePageState extends State<MyHomePage>{
  
@@ -625,9 +625,7 @@ class _MyHomePageState extends State<MyHomePage>{
 </details>
 
 ### 2. Establish connection
-Take the user’s consent (on the “universal” version”) or just accept the agreement (on the “no agreement” version)
-
-`--- --- --- --- Universal version --- --- --- ---`
+Take the user’s consent or just accept the agreement (on the “no agreement” version)
 
 To establish a connection the Cash Raven and get the user’s consent to use the `connection.start(int logo, @Nullable String title,@Nullable Integer iconHeightInDp)` method. We provide a customizable agreement dialog. You can change the logo, title/promo text of the dialog, and customize the size of the logo.
 
@@ -650,22 +648,6 @@ public void startClick() {
 * When the user clicks ok on the accept or decline button of the agreement dialog, the Callback method of CRConnection object onConnect(Boolean isConnected) will be called.
 * Make sure the Initialization of CRConnection is done before calling the connection.start(x,x,x)
 
-`--- --- --- --- --- No-agreement version --- --- --- --- ---`
-
-*   Before starting service, call `acceptAgreement()` of the CRConnection class. Then, call `startService()` To start the Cash Raven service. since in this version of SDK developer needs to use a custom agreement pop-up/dialog box. Make sure that the UI of that dialog box is compatible with Android TV If the app is also targeted for Android TV.
-
-Sample :
-
-```java
-public void startClick() {
-      connection.acceptAgreement();
-      connection.startService();
-}
-```
-
-*   It's recommended to call `connection.start(int x,String y, Integer z)` or connection.acceptAgreement() or connection.startService() once per session, Inside onCreate() or at click event of view. Don’t call it multiple times in one session such as call it in loop or in onResume()
-*   Upon calling the `connection.start()` agreement dialog will pop up for Android versions 5 to 12. In Android versions 13 and 14 dialog asking for notification permission will show, response to that will be handled by `onRequestPermissionsResult`
-*   Call `connection.agreementDialog()` inside `onRequestPermissionsResult`
 </details>
 
 <details markdown=1>
@@ -810,8 +792,6 @@ fun revokeAgreement(){
 **After agreement is revoked, you can create it again**, but you have to take the user’s consent first
 <details markdown=1>
   <summary markdown="span"><strong>Native Android</strong></summary>
-    
-`--- --- --- --- Universal version --- --- --- ---`
 
 Use `start(int logo, @Nullable String title,@Nullable Integer iconHeightInDp)` of `CRConnectionclass`. You can access this method using connectionobject which you initialize in step 3.5.
 
@@ -823,22 +803,10 @@ public void startClick() {
    //connection.start(R.drawable.logo,null,null);
 }
 ```
-
-`--- --- --- --- Non agreement version --- --- --- ---`
-
-Use acceptAgreement ofCRConnection class. You can access this method using the connection object which you initialize in step 3.5 (No-Agreement section).
-
-```java
-public void startClick() {
-  connection.acceptAgreement();
-}
-```
 </details>
 
 <details markdown=1>
   <summary markdown="span"><strong>Flutter</strong></summary>
-    
-`--- --- --- --- Universal version --- --- --- ---`
 
 Use `start(int logo, @Nullable String title,@Nullable Integer iconHeightInDp)` of `CRConnectionclass`. You can access this method using connectionobject which you initialize in step 3.5.
 
@@ -848,17 +816,6 @@ fun startClick() {
 
    //Null argument for set default value 
    //connection!!.start(R.drawable.logo,null,null)
-}
-```
-
-`--- --- --- --- Non agreement version --- --- --- ---`
-
-Use acceptAgreement ofCRConnection class. You can access this method using the connection object which you initialize in step 3.5 (No-Agreement section). then start the connection by `startService()`.
-
-```kotlin
-fun void startClick() {
-   connection!!.acceptAgreement()
-   connection!!.startService()
 }
 ```
 </details>
@@ -922,11 +879,11 @@ Step 5: Get updated on SDK’s parameter values
 *   The call-back method onConnect() of the connection object will return a boolean value corresponding to the accept and decline buttons of the agreement dialog.
 *   The callback method `onDataUpdate()` of `ConnectionListener` updates and provides values of all parameters. Whenever any change occurs in any parameter onDataUpdate() method is triggered.
 
-You can put conditions based on the parameter's title/key for filter-specific parameters.  
+You can put conditions based on the parameter's title/key for filter-specific parameters.
 
 <details markdown=1>
   <summary markdown="span"><strong>Native Android</strong></summary>
-    
+
 ```java
 connection = new CRConnection(Activity.this,"APP_ID", new ConnectionListener(){
     @Override
@@ -1004,8 +961,8 @@ String allPara = "AgreementStatus :"+connection.getAgreementStatus()+"\n" +
   <summary markdown="span"><strong>Flutter</strong></summary>
     In this example we are getting all useful parameters at once developer can get as per need by calling the specific function mentioned in step 4.
     Create function fetchData() that returns String value
-    
-   
+
+
 ```kotlin
  fun fetchData(): String {
       var data =  "AgreementStatus :"+connection!!.getAgreementStatus()+"\n" +
@@ -1038,7 +995,7 @@ You can achieve this by initializing the object of the CRConnection class with t
 
 <details markdown=1>
   <summary markdown="span"><strong>Native Android</strong></summary>
-    
+
 ```java
 public class SecondActivity extends AppCompatActivity {
     CRConnection connection;
