@@ -1040,21 +1040,21 @@ class MainActivity: FlutterActivity() {
 Step 6: Understanding Remote Config parameters
 -----------------------
 
-Remote Config determines the way SDK behaves.
+Remote Config determines the way SDK behaves.<br />
 There're such configurable parameters:
 
-**AppForeground** - determines whether to connect to Gateway when app is currently on screen
-**OtherAppInScreen** - determines whether to connect to Gateway when different app is on screen (when screen is on)
-**ScreenOffSharing** - determines whether to connect to Gateway when screen is off or Sleep mode
-**RunInBackground** - determines whether to connect to Gateway when app is removed from foreground
+**AppForeground** - determines whether to connect to Gateway when app is currently on screen<br />
+**OtherAppInScreen** - determines whether to connect to Gateway when different app is on screen (when screen is on)<br />
+**ScreenOffSharing** - determines whether to connect to Gateway when screen is off or Sleep mode<br />
+**RunInBackground** - determines whether to connect to Gateway when app is removed from foreground<br />
 **MobileData** - determines whether to connect to Gateway when Metered WiFi or Mobile Data is connected
 
 ## Remote Config behaviour
 
 ### Tables description
-**Fire OS 5** - tested on AFTT
-**Fire OS 6** - tested on AFTMM
-**Connects when** - column shows when device is connected to Gateway while certain Remote Config value is disabled
+**Fire OS 5** - tested on AFTT<br />
+**Fire OS 6** - tested on AFTMM<br />
+**Connects when** - column shows when device is connected to Gateway while certain Remote Config value is disabled<br />
 **Disconnects when** - column shows when device is disconnected from Gateway while certain Remote Config value is disabled
 
 ### AppForeground is <ins>False</ins>
