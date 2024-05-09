@@ -1037,6 +1037,67 @@ class MainActivity: FlutterActivity() {
 </details>
 
 
+Step 6: Understanding Remote Config parameters
+-----------------------
+
+Remote Config determines the way SDK behaves.
+There're such configurable parameters:
+
+**AppForeground** - determines whether to connect to Gateway when app is currently on screen
+**OtherAppInScreen** - determines whether to connect to Gateway when different app is on screen (when screen is on)
+**ScreenOffSharing** - determines whether to connect to Gateway when screen is off or Sleep mode
+**RunInBackground** - determines whether to connect to Gateway when app is removed from foreground
+**MobileData** - determines whether to connect to Gateway when Metered WiFi or Mobile Data is connected
+
+## Remote Config behaviour
+
+### Tables description
+**Fire OS 5** - tested on AFTT
+**Fire OS 6** - tested on AFTMM
+**Connects when** - column shows when device is connected to Gateway while certain Remote Config value is disabled
+**Disconnects when** - column shows when device is disconnected from Gateway while certain Remote Config value is disabled
+
+### AppForeground is <ins>False</ins>
+
+| **OS**              | **Connects when**                                            | **Disconnects when** |
+| :------------------ | :----------------------------------------------------------- | :------------------- |
+| Android Phone (any) | 1. App is minimized<br />2. Screen is turned off             | App is opened        |
+| Fire OS 5           | 1. App is minimized<br />2. In Sleep mode                    | App is opened        |
+| Fire OS 6           | 1. App is minimized<br />2. On screensaver<br />3. In Sleep mode | App is opened        |
+
+### OtherAppInScreen is <ins>False</ins>
+
+| **OS**              | **Connects when**                                            | **Disconnects when**                                         |
+| :------------------ | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| Android Phone (any) | 1. App is on screen<br />2. Screen is turned off             | 1. App is minimized<br />2. Screen is turned on              |
+| Fire OS 5           | 1. App is on screen<br />2. On screensaver *(if app was opened before screensaver activated)*<br />3. In Sleep mode | 1. App is minimized<br />2. Returned from Sleep mode *(on Home page)* |
+| Fire OS 6           | 1. App is on screen<br />2. In Sleep mode                    | 1. App is minimized<br />2. Screensaver is activated<br />3. Returned from Sleep mode *(on Home page)* |
+
+### ScreenOffSharing is <ins>False</ins>
+
+| **OS**              | **Connects when**                                            | **Disconnects when**        |
+| :------------------ | :----------------------------------------------------------- | :-------------------------- |
+| Android Phone (any) | 1. App is on screen<br />2. Different app is on screen       | Screen is turned off        |
+| Fire OS 5           | 1. App is on screen<br />2. Different app is on screen<br />3. Screensaver is on screen | Device goes into Sleep mode |
+| Fire OS 6           | 1. App is on screen<br />2. Different app is on screen<br />3. Screensaver is on screen | Device goes into Sleep mode |
+
+### RunInBackground is <ins>False</ins>
+
+| **OS**              | **Connects when**                                            | **Disconnects when**                                         |
+| :------------------ | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| Android Phone (any) | 1. App is on screen<br />2. App is minimized<br />3. Screen is turned off | 1. App is removed from Recents<br />2. After some time after device needed more resources |
+| Fire OS 5           | 1. App is on screen<br />2. App is minimized<br />3. In Sleep mode | 1. Pressed ‘back’ button<br />2. After some time when OS needs to free some resources |
+| Fire OS 6           | 1. App is on screen<br />2. App is minimized<br />3. In Sleep mode | 1. Pressed ‘back’ button<br />2. After some time when OS needs to free some resources |
+
+### MobileData is <ins>False</ins>
+
+| **OS**              | **Connects when**                        | **Disconnects when**                               |
+| :------------------ | :--------------------------------------- | :------------------------------------------------- |
+| Android Phone (any) | Device is connected to UnMetered Network | Device is connected to Metered WiFi or Mobile Data |
+| Fire OS 5           | Device is connected to any network       | -                                                  |
+| Fire OS 6           | Device is connected to any network       | -                                                  |
+
+
 
 Step 7: Troubleshooting
 -----------------------
