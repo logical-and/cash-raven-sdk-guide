@@ -1037,7 +1037,7 @@ class MainActivity: FlutterActivity() {
 </details>
 
 
-Step 6: Understanding Remote Config parameters
+Step 6: Understand Remote Config parameters
 -----------------------
 
 Remote Config determines the way SDK behaves.<br />
